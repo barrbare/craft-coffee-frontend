@@ -2,6 +2,7 @@ import React from "react";
 import { Link, NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { FiCoffee } from "react-icons/fi";
+import { useCoffee } from "../../context/CoffeeContext";
 
 const Nav = styled.nav`
   display: flex;
@@ -34,9 +35,15 @@ const Logo = styled(Link)`
   }
 `;
 
+const NavRight = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+`;
+
 const NavLinks = styled.div`
   display: flex;
-  gap: 2.5rem;
+  gap: 2rem;
 `;
 
 const StyledNavLink = styled(NavLink)`
@@ -46,7 +53,8 @@ const StyledNavLink = styled(NavLink)`
   transition: ${({ theme }) => theme.transitions.default};
   position: relative;
 
-  &:hover, &.active {
+  &:hover,
+  &.active {
     color: ${({ theme }) => theme.colors.accent};
   }
 
@@ -62,20 +70,47 @@ const StyledNavLink = styled(NavLink)`
   }
 `;
 
+const CurrencyBtn = styled.button`
+  background: rgba(255, 255, 255, 0.1);
+  color: ${({ theme }) => theme.colors.accent};
+  border: 1px solid ${({ theme }) => theme.colors.accent};
+  padding: 0.45rem 1rem;
+  border-radius: ${({ theme }) => theme.borderRadius.small};
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: ${({ theme }) => theme.transitions.default};
+  cursor: pointer;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.accent};
+    color: ${({ theme }) => theme.colors.primary};
+  }
+`;
+
 const Navbar = () => {
+  const { currency, toggleCurrency } = useCoffee();
+
   return (
     <Nav>
       <Logo to="/">
         <FiCoffee /> Craft Coffee
       </Logo>
-      <NavLinks>
-        <StyledNavLink to="/" end>
-          Home
-        </StyledNavLink>
-        <StyledNavLink to="/menu">
-          Menu
-        </StyledNavLink>
-      </NavLinks>
+      <NavRight>
+        <NavLinks>
+          <StyledNavLink to="/" end>
+            Home
+          </StyledNavLink>
+          <StyledNavLink to="/menu">
+            Coffee Menu
+          </StyledNavLink>
+          <StyledNavLink to="/ingredients">
+            Ingredients
+          </StyledNavLink>
+        </NavLinks>
+        <CurrencyBtn onClick={toggleCurrency}>
+          {currency}
+        </CurrencyBtn>
+      </NavRight>
     </Nav>
   );
 };

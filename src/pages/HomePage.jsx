@@ -144,7 +144,6 @@ const HomePage = () => {
       <FeaturesSection>
         <FeatureCard>
           <FiCoffee />
-          <h3>Fresh Beans</h3>
           <h3>Freshly Roasted</h3>
           <p>Sourced directly from sustainable farms worldwide.</p>
         </FeatureCard>

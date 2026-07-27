@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { useCoffee } from "../../context/CoffeeContext";
 
 const Card = styled.div`
   background: ${({ theme }) => theme.colors.cardBg};
@@ -46,8 +47,17 @@ const Title = styled.h3`
 const Description = styled.p`
   font-size: 0.9rem;
   color: ${({ theme }) => theme.colors.textSecondary};
-  margin-bottom: 1.2rem;
+  margin-bottom: 1rem;
   flex-grow: 1;
+`;
+
+const MetaInfo = styled.div`
+  display: flex;
+  gap: 10px;
+  font-size: 0.8rem;
+  color: ${({ theme }) => theme.colors.secondary};
+  margin-bottom: 1rem;
+  font-weight: 500;
 `;
 
 const CardFooter = styled.div`
@@ -58,7 +68,7 @@ const CardFooter = styled.div`
 `;
 
 const Price = styled.span`
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   font-weight: 700;
   color: ${({ theme }) => theme.colors.primary};
 `;
@@ -77,17 +87,29 @@ const DetailsButton = styled(Link)`
   }
 `;
 
-const CoffeeCard = ({ id, name, description, price, image }) => {
+const CoffeeCard = ({ id, _id, title, description, image, country, caffeine, ingredients }) => {
+  const { calculateTotalPriceGEL, formatPrice } = useCoffee();
+  const priceGEL = calculateTotalPriceGEL(ingredients);
+
+  const itemId = id || _id;
+
   return (
     <Card>
       <ImageContainer>
-        <img src={image || "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&q=80&w=600"} alt={name} />
+        <img
+          src={image || "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&q=80&w=600"}
+          alt={title}
+        />
       </ImageContainer>
-      <Title>{name}</Title>
+      <Title>{title}</Title>
       <Description>{description}</Description>
+      <MetaInfo>
+        <span>{country}</span>
+        <span>{caffeine}</span>
+      </MetaInfo>
       <CardFooter>
-        <Price>${price}</Price>
-        <DetailsButton to={`/coffee/${id}`}>View Details</DetailsButton>
+        <Price>{formatPrice(priceGEL)}</Price>
+        <DetailsButton to={`/coffee/${itemId}`}>View Details</DetailsButton>
       </CardFooter>
     </Card>
   );
